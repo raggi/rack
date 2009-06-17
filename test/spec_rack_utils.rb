@@ -20,6 +20,11 @@ context "Rack::Utils" do
       should.equal "q1!2\"'w$5&7/z8)?\\"
   end
 
+  specify "should escape path spaces with %20" do
+    Rack::Utils.escape("foo bar", true).should.equal "foo%20bar"
+    Rack::Utils.escape_path("foo bar").should.equal "foo%20bar"
+  end
+
   specify "should parse query strings correctly" do
     Rack::Utils.parse_query("foo=bar").should.equal "foo" => "bar"
     Rack::Utils.parse_query("foo=bar&foo=quux").

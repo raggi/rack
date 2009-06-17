@@ -11,12 +11,17 @@ module Rack
     # Performs URI escaping so that you can construct proper
     # query strings faster.  Use this rather than the cgi.rb
     # version since it's faster.  (Stolen from Camping).
-    def escape(s)
-      s.to_s.gsub(/([^ a-zA-Z0-9_.-]+)/n) {
+    def escape(s, path = false)
+      s.to_s.gsub(/([^#{' ' unless path}a-zA-Z0-9_.-]+)/n) {
         '%'+$1.unpack('H2'*$1.size).join('%').upcase
       }.tr(' ', '+')
     end
     module_function :escape
+
+    def escape_path(s)
+      escape(s, true)
+    end
+    module_function :escape_path
 
     # Unescapes a URI escaped string. (Stolen from Camping).
     def unescape(s)
